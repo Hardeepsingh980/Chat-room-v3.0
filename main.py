@@ -191,7 +191,7 @@ def main_loop(username):
     win = Tk()
     win.geometry('450x487')
     win.resizable(0,0)
-    win.title('DeeMail')
+    win.title('DeeChat')
 
     Label(win, text='',bg=bg,width=450,font=('arial black',15,'bold'),relief='groove').pack()
     title_label = Label(win, text='DeeChat',bg=bg,fg='white',font=('arial black',12,'bold'))
