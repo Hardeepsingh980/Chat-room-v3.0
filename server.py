@@ -1,24 +1,31 @@
+#Used to seprate processes
 import _thread
+#Used For Connection
 import socket
+#Used For sending Data
 import json
 
-s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)  
-s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+#Establishing Connection ----
+server=socket.socket(socket.AF_INET,socket.SOCK_STREAM)  
+server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
 host="localhost"
 port=5000
-s.bind((host,port))
-s.listen(5)
+server.bind((host,port))
+server.listen(5)
+
 clients=[]
 clients_name = []
 
 def connectNewClient(c):
      while True:
           try:
+               #Recieving Data from Clients:
                msg = c.recv(2048).decode('utf-8')
                j = msg.replace("'","\"")
                d = json.loads(j)
                print(d)
                
+               #Alerting If The Client Is Online Or Offline
                if d['alert'] == 'Online':
                     clients_name.append(d['username'])
                elif d['alert'] == 'Offline':
@@ -41,7 +48,7 @@ def sendToAll(msg):
         
 while True:
      try:
-         c,ad=s.accept()
+         c,ad=server.accept()
          print('Connection Established')
          clients.append(c)
          _thread.start_new_thread(connectNewClient,(c,))
